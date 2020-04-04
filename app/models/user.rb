@@ -19,4 +19,18 @@ class User < ApplicationRecord
   validates :introduction, length: {maximum: 50}
 
     attachment :profile_image, destroy: false
+
+    def self.search(keyword, method)
+      if method == "partial_match"
+        where("name like?", "%#{keyword}%")
+      elsif method == "perfect_match"
+        where("name like?", "#{keyword}")
+      elsif method == "forward_match"
+        where("name like?", "#{keyword}%")
+      elsif method == "backward_match"
+        where("name like?", "%#{keyword}")
+      else
+        all
+      end
+    end
 end
