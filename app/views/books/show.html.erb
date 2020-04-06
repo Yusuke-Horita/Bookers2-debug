@@ -21,18 +21,10 @@
 						<% end %>
 					</td>
 					<td><%= link_to @book.title, @book %></td>
-					<td>
-						<% if Favorite.exists?(user_id: current_user.id, book_id: @book.id) %>
-							<%= link_to book_favorites_path(@book), method: :delete do %>
-								<span class="glyphicon glyphicon-heart" aria-hidden="true" style="color: red;"></span>
-							<% end %>
-							<%= @book.favorites.count %>
-						<% else %>
-							<%= link_to book_favorites_path(@book), method: :post do %>
-								<span class="glyphicon glyphicon-heart" aria-hidden="true" style="color: gray;"></span>
-							<% end %>
-							<%= @book.favorites.count %>
-						<% end %>
+					<td id="favorite_<%= @book.id %>">
+
+						<%= render 'favorite', book: @book %>
+
 					</td>
 					<td>
 						<span>コメント数 : </span>
@@ -49,34 +41,19 @@
 
 		<h2>Comments</h2>
 
-		<table class="table">
-			<% @book_comments.each do |book_comment| %>
+			<%= render "comments", book: @book, book_comments: @book_comments %>
+
+			<table class="table">
 				<tr>
 					<td>
-						<%= link_to user_path(book_comment.user) do %>
-						<%= attachment_image_tag book_comment.user, :profile_image, :fill, 60, 60, format: "jpeg", fallback: "no_image.jpg" %>
-						<% end %>
-					</td>
-					<td>
-						<%= book_comment.comment %>
-					</td>
-					<td>
-						<% if book_comment.user_id == current_user.id %>
-							<%= link_to "Destroy", book_book_comment_path(@book, book_comment), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn btn-danger" %>
-						<% end %>
-					</td>
-				</tr>
-			<% end %>
-				<tr>
-					<td>
-						<%= form_for [@book, @book_comment] do |f| %>
-						<%= f.text_area :comment, class: "col-xs-12" %>
+						<%= form_with model: [@book, @book_comment], remote: true do |f| %>
+						<%= f.text_area :comment, class: "form-control", id: "comment-form"  %>
 						<br>
 						<%= f.submit "Create", class: "btn btn-success" %>
 						<% end %>
 					</td>
 				</tr>
-		</table>
+			</table>
 	</div>
 </div>
 
