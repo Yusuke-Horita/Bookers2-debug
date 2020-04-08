@@ -54,7 +54,39 @@
 				<% end %>
 			</tbody>
 		</table>
-<!--books一覧 -->
-
 	</div>
 </div>
+
+<% if @user.id == current_user.id %>
+	<div class="row">
+		<h2>Your Map</h2>
+		<div id="map" style="height: 400px"></div>
+	</div>
+<% end %>
+
+<script>
+function initMap(){
+  var pos = {lat: <%= @map[0] %>, lng: <%= @map[1] %>};
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+  	center: pos,
+  	zoom: 15
+  });
+
+  var infowindow = new google.maps.InfoWindow({
+  	content: "<%= @user.city %>"
+  });
+
+  var marker = new google.maps.Marker({
+    position: pos,
+    map: map,
+    title: "<%= @user.city %>"
+　});
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+}
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("API_KEY") %>&callback=initMap" async defer></script>
