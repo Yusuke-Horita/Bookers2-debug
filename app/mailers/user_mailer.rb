@@ -5,9 +5,9 @@ class UserMailer < ApplicationMailer
   #
   #   en.user_mailer.user_welcome_mail.subject
   #
-  def user_welcome_mail
-    @greeting = "Hi"
+  def user_welcome_mail(user)
+    @user = user
 
-    mail to: "to@example.org"
+    mail(to: @user.email, subject: '登録が完了しました')
   end
 end

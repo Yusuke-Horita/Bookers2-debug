@@ -1,5 +1,12 @@
-<h1>User#user_welcome_mail</h1>
-
-<p>
-  <%= @greeting %>, find me in app/views/user_mailer/user_welcome_mail.html.erb
-</p>
+<div>
+	<h1>ようこそ <%= @user.name %> 様</h1>
+	<p>
+	  この度はBookerに登録頂きましてありがとうございます。
+	</p>
+	<p>
+	  ユーザー名: <%= @user.name %>
+	</p>
+	<p>
+	  メールアドレス: <%= @user.email %>
+	</p>
+</div>
